@@ -5,6 +5,7 @@ import com.devsuperior.dscommerce.entities.Category;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.entities.Rating;
 import com.devsuperior.dscommerce.entities.User;
+import com.devsuperior.dscommerce.repositories.CategoryRepository;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 import com.devsuperior.dscommerce.repositories.RatingReository;
 import com.devsuperior.dscommerce.repositories.UserRepository;
@@ -20,6 +21,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,16 +34,20 @@ public class RatingServices {
     private RatingReository repository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Transactional(readOnly = true)
-    public RatingDTO findById(Long id) {
+    public RatingMinDTO findById(Long id) {
         Rating rating = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
-        return new RatingDTO(rating);
+        System.out.println(rating);
+        return new RatingMinDTO(rating);
     }
 
 //    @Transactional(readOnly = true)
@@ -51,6 +60,11 @@ public class RatingServices {
     public RatingDTO insert(RatingDTO dto) {
         Rating entity = new Rating();
         copyDtoToEntity(dto, entity);
+
+        Product productreferenceById = productRepository.getReferenceById(dto.getProductId());
+
+        entity.setProduct(productreferenceById);
+        entity.setUser(userRepository.getReferenceById(dto.getUserId()));
         entity = repository.save(entity);
         return new RatingDTO(entity);
     }
@@ -82,19 +96,7 @@ public class RatingServices {
     }
 
     private void copyDtoToEntity(RatingDTO dto, Rating entity) {
-
         entity.setStars(dto.getStars());
         entity.setComments(dto.getComments());
-
-        entity.getProducts().clear();
-        ProductDTO prod = productService.findById(1L);
-        System.out.println(prod);
-        entity.getProducts().add(new Product(prod));
-
-
-        User us = userRepository.findById(dto.getId()).orElseThrow();
-        if (us != null) {
-            entity.setUser(us);
-        }
     }
 }

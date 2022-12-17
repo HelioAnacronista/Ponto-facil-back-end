@@ -2,6 +2,7 @@ package com.devsuperior.dscommerce.controllers;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.dto.RatingDTO;
+import com.devsuperior.dscommerce.dto.RatingMinDTO;
 import com.devsuperior.dscommerce.services.RatingServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class RatingController {
     private RatingServices service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<RatingDTO> findById(@PathVariable Long id) {
-        RatingDTO dto = service.findById(id);
+    public ResponseEntity<RatingMinDTO> findById(@PathVariable Long id) {
+        RatingMinDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 

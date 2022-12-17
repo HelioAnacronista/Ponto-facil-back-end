@@ -14,8 +14,9 @@ public class Rating {
     private Integer stars;
     private String comments;
 
-    @ManyToMany(mappedBy = "ratings")
-    private Set<Product> products = new HashSet<>();
+    @ManyToOne()
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "users_ratings")
@@ -45,12 +46,12 @@ public class Rating {
         this.comments = comments;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public User getUser() {
