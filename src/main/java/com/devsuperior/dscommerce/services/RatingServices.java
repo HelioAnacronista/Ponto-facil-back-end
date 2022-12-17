@@ -92,7 +92,7 @@ public class RatingServices {
         entity.setStars(dto.getStars());
         entity.setComments(dto.getComments());
 
-        entity.getProducts().clear();
+
 
 
 

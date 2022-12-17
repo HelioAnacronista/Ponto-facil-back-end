@@ -2,6 +2,7 @@ package com.devsuperior.dscommerce.controllers;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.dto.RatingDTO;
+import com.devsuperior.dscommerce.dto.RatingMinDTO;
 import com.devsuperior.dscommerce.services.RatingServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

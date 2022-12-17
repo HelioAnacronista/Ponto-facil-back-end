@@ -6,21 +6,21 @@ import com.devsuperior.dscommerce.entities.Rating;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RatingDTO {
+public class RatingMinDTO {
+
     private Long id;
     private Integer stars;
     private String comments;
-    private Long productId;
+    private Product product;
     private Long userId;
 
-    public RatingDTO() {
+    public RatingMinDTO() {
     }
 
-    public RatingDTO(Long id, Integer stars, String comments, Long productId, Long userId) {
+    public RatingMinDTO(Long id, Integer stars, String comments, Long userId) {
         this.id = id;
         this.stars = stars;
         this.comments = comments;
-        this.productId = productId;
         this.userId = userId;
     }
 
@@ -48,12 +48,12 @@ public class RatingDTO {
         this.comments = comments;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Long getUserId() {
@@ -64,13 +64,11 @@ public class RatingDTO {
         this.userId = userId;
     }
 
-    public RatingDTO(Rating entity) {
+    public RatingMinDTO(Rating entity) {
         id = entity.getId();
         stars = entity.getStars();
         comments = entity.getComments();
-        Product provis = new Product();
-        setId(1L);
-        productId = entity.getProduct().getId();
+        product = entity.getProduct();
         userId = entity.getUser().getId();
     }
 }
