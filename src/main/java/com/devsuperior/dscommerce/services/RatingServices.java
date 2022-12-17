@@ -29,7 +29,7 @@ public class RatingServices {
     private RatingReository repository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -49,9 +49,15 @@ public class RatingServices {
 
     @Transactional
     public RatingDTO insert(RatingDTO dto) {
+        Product p = productRepository.findById(dto.getProductId()).orElseThrow( () -> new ResourceNotFoundException("product with id "
+                + dto.getProductId()
+                + "not found"));
+
         Rating entity = new Rating();
         copyDtoToEntity(dto, entity);
+        p.getRatings().add(entity);
         entity = repository.save(entity);
+        productRepository.save(p);
         return new RatingDTO(entity);
     }
 
@@ -87,9 +93,7 @@ public class RatingServices {
         entity.setComments(dto.getComments());
 
         entity.getProducts().clear();
-        ProductDTO prod = productService.findById(1L);
-        System.out.println(prod);
-        entity.getProducts().add(new Product(prod));
+
 
 
         User us = userRepository.findById(dto.getId()).orElseThrow();
